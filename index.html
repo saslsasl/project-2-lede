@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Doto:wght@100..900&family=Quicksand:wght@300..700&family=Sixtyfour+Convergence&family=VT323&display=swap" rel="stylesheet">
+
+
+<title>sad poem😞 perscriber</title>
+
+<style>
+  
+    body {
+        background-color: #0000FF;
+        font-family: "Bitcount Grid Double";
+        font-weight: 450; 
+        text-align: center; 
+        margin-top: 300px;
+        color:antiquewhite;
+        font-size: 30px;     
+    }
+    
+    a {
+      color: #4747FC; 
+    }
+
+    button {
+        font-family:'Courier New', Courier, monospace;
+        padding: 20px 20px; 
+        font-size: 15px;
+        border-radius: 12px;
+        font-style: italic;
+        }
+
+    button:hover {
+        background-color: #04AA6D; 
+        color: white;
+    }
+
+    .step {
+    position: relative;
+    display: none;
+    }
+
+    .step.active {
+    position: relative;
+    z-index:1;
+    display: block;
+    }
+
+
+  .tear-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+  .tear {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.8;
+    animation-name: fall;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+    }
+
+  /* Different tears with different left positions and durations */
+  .tear1 {
+    left: 10vw;
+    animation-duration: 8s;
+    animation-delay: 0s;
+  }
+  .tear2 {
+    left: 30vw;
+    animation-duration: 10s;
+    animation-delay: 0s;
+  }
+  .tear3 {
+    left: 50vw;
+    animation-duration: 7s;
+    animation-delay: 0s;
+  }
+  .tear4 {
+    left: 70vw;
+    animation-duration: 9s;
+    animation-delay: 0s;
+  }
+  .tear5 {
+    left: 90vw;
+    animation-duration: 6s;
+    animation-delay: 0s;
+  }
+
+  @keyframes fall {
+    0% {
+      top: -2rem;
+      opacity: 0.8;
+      transform: rotate(0deg);
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      top: 100vh;
+      opacity: 0;
+      transform: rotate(360deg);
+    }
+  }
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+
+function showStep(num) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + num).classList.add('active');
+}
+
+function choose(mood) {
+  fetch('posneg_poems.csv')
+    .then(response => response.text())
+    .then(csvText => {
+      const parsed = Papa.parse(csvText, { header: true });
+      const rows = parsed.data;
+
+      // Filter poems by mood
+      const matches = rows.filter(row => {
+        const result = (row.results || '').trim().toLowerCase();
+        return (mood === 'kinda' && result === 'positive') ||
+               (mood === 'soooo' && result === 'negative');
+      });
+
+      if (matches.length === 0) {
+        document.getElementById('poem-text').innerHTML = "No matching poems found.";
+        showStep(3);
+        return;
+      }
+
+      // Pick a random poem
+      const randomPoem = matches[Math.floor(Math.random() * matches.length)];
+
+      // Display poem details
+      document.getElementById('poem-text').innerHTML = `
+        <h3>${randomPoem.title}</h3>
+        <p><em>by ${randomPoem.author}</em></p>
+        <p style="font-weight:350; font-size:27px">${randomPoem.text}</p>
+        <p><a href="${randomPoem.url}" target="_blank" rel="noopener noreferrer">Read more</a></p>
+      `;
+
+      showStep(3);
+    })
+    .catch(error => {
+      console.error('Error loading or parsing CSV:', error);
+      document.getElementById('poem-text').innerHTML = "Error loading poems.";
+      showStep(3);
+    });
+
+    // Assume randomPoem.text contains slashes and newlines
+
+    const poemHtml = randomPoem.text
+  .replace(/\\/g, '\\\\')       // If you want to explicitly double backslashes (optional)
+  .replace(/\n/g, '<br>');      // Convert newlines to <br> for HTML display
+
+document.getElementById('poem-text').innerHTML = `
+  <h3>${randomPoem.title}</h3>
+  <p><em>by ${randomPoem.author}</em></p>
+  <p>${poemHtml}</p> 
+  <p><a href="${randomPoem.url}" target="_blank" rel="noopener noreferrer">Read more</a></p>
+`;
+
+}
+
+</script>
+
+</head>
+
+<body>
+  <div class="tear-container">
+  <div class="tear tear1">💧</div>
+  <div class="tear tear2">💧</div>
+  <div class="tear tear3">💧</div>
+  <div class="tear tear4">💧</div>
+  <div class="tear tear5">💧</div>
+</div>
+
+<div id="step1" class="step active">
+    Looking for a sad poem?
+    <button onclick="showStep(2)">yes</button></div>
+  
+<div id="step2" class="step">
+  <h2>How sad?</h2>
+  <button onclick="choose('kinda')">kinda sad</button>
+  <button onclick="choose('soooo')">soooo sad</button>
+</div>
+
+<div id="step3" class="step">
+  <p id="poem-text"></p>
+</div>
+
+</body>
+</html>

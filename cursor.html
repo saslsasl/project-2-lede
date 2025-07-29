@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3 Step Poem Selector</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 50px;
+    background: #f0f0f0;
+  }
+  .box {
+    display: none;
+    background: white;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .box.active {
+    display: block;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="step1" class="box active">
+  <h2>Welcome</h2>
+  <button onclick="showStep(2)">YES</button>
+</div>
+
+<div id="step2" class="box">
+  <h2>Pick an option</h2>
+  <button onclick="choose('option1')">Option 1</button>
+  <button onclick="choose('option2')">Option 2</button>
+</div>
+
+<div id="step3" class="box">
+  <h2>Your Poem</h2>
+  <p id="poem-text"></p>
+</div>
+
+<script>
+function showStep(num) {
+  document.querySelectorAll('.box').forEach(b => b.classList.remove('active'));
+  document.getElementById('step'+num).classList.add('active');
+}
+
+function choose(option) {
+  // Load CSV and find the matching poem
+  fetch('poems.csv')
+    .then(r => r.text())
+    .then(text => {
+      const lines = text.trim().split('\n').slice(1); // skip header
+      let poem = "No poem found.";
+      for (let line of lines) {
+        const [choice, poemText] = line.split(',');
+        if (choice === option) {
+          poem = poemText;
+          break;
+        }
+      }
+      document.getElementById('poem-text').textContent = poem;
+      showStep(3);
+    });
+}
+</script>
+
+</body>
+</html>

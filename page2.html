@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Doto:wght@100..900&family=Quicksand:wght@300..700&family=Sixtyfour+Convergence&family=VT323&display=swap" rel="stylesheet">
+
+
+<title>sad poem😞 perscriber</title>
+
+<style>
+  
+    body {
+        background-color: #0000FF;
+        font-family: "Bitcount Grid Double";
+        font-weight: 450; 
+        text-align: center; 
+        margin-top: 300px;
+        color:antiquewhite;
+        font-size: 30px;     
+    }
+    
+    button {
+        font-family:'Courier New', Courier, monospace;
+        padding: 20px 20px; 
+        font-size: 15px;
+        border-radius: 12px;
+        font-style: italic;
+        }
+
+    button:hover {
+        background-color: #04AA6D; 
+        color: white;
+    }
+    
+      .tear-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .tear {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.8;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  /* Different tears with different left positions and durations */
+  .tear1 {
+    left: 10vw;
+    animation-duration: 8s;
+    animation-delay: -10s;
+  }
+  .tear2 {
+    left: 30vw;
+    animation-duration: 10s;
+    animation-delay: -15s;
+  }
+  .tear3 {
+    left: 50vw;
+    animation-duration: 7s;
+    animation-delay: -20s;
+  }
+  .tear4 {
+    left: 70vw;
+    animation-duration: 9s;
+    animation-delay: -30s;
+  }
+  .tear5 {
+    left: 90vw;
+    animation-duration: 6s;
+    animation-delay: -40s;
+  }
+
+  @keyframes fall {
+    0% {
+      top: -2rem;
+      opacity: 0.8;
+      transform: rotate(0deg);
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      top: 100vh;
+      opacity: 0;
+      transform: rotate(360deg);
+    }
+  }
+
+</style>
+</head>
+
+<body>
+    How sad?
+    <button onclick="location.href='page2.html'">kind of sad
+    </button>
+    
+    <button> sooooo sad </button>
+
+<div class="tear-container">
+  <div class="tear tear1">🥲</div>
+  <div class="tear tear2">🥲</div>
+  <div class="tear tear3">🥲</div>
+  <div class="tear tear4">🥲</div>
+  <div class="tear tear5">🥲</div>
+</div>
+
+  
+</body>
+</html>
